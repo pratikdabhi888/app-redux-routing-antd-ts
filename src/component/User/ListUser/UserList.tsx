@@ -3,18 +3,19 @@ import {Table, Popconfirm, Skeleton, Button, message, Drawer, Result} from 'antd
 import {useDispatch, useSelector} from 'react-redux'
 import {IRootReducer} from "../../../store/reducers";
 import {useEffect, useState} from "react";
-import {getListUserData,deleteUserData,clearUserData,viewUserData} from "../../../store/actions/UsersActions"
+import {getListUserData, deleteUserData, clearUserData, viewUserData} from "../../../store/actions/UsersActions"
 import ViewUser from "../ViewUser/ViewUser";
 import AddUser from "../AddUser/AddUser";
 import "./userList.css"
-import { PlusCircleOutlined } from '@ant-design/icons';
+import {PlusCircleOutlined} from '@ant-design/icons';
+
 const ListUser = () => {
   const dispatch = useDispatch()
-  const [ userList,setUserList ] = useState([]);
-  const [ spin,setSpin ] = useState(false);
-  const [ drawer,setDrawer ] = useState(false);
-  const [ userId,setUserId ] = useState(0);
-  const [ contentType,setContentType ]:any = useState(undefined);
+  const [userList, setUserList] = useState([]);
+  const [spin, setSpin] = useState(false);
+  const [drawer, setDrawer] = useState(false);
+
+  const [contentType, setContentType]: any = useState(undefined);
   const columns = [
     {
       title: 'Email',
@@ -33,64 +34,67 @@ const ListUser = () => {
     },
     {
       title: 'Action',
-      render: (data:any) => (
+      render: (data: any) => (
         <>
-          <Button type="dashed" size="middle" onClick={() => viewUser(data.id)} >
+          <Button type="dashed" size="middle" onClick={() => viewUser(data.id)}>
             VIEW
           </Button>
 
-          <Button type="dashed" size="middle" onClick={updateForm}>
+          <Button type="dashed" size="middle" onClick={() => updateForm(data.id)}>
             UPDATE
           </Button>
           <Popconfirm title="Are you sure？" okText="Yes" cancelText="No" onConfirm={() => deleteUser(data.id)}>
-          <Button type="dashed" size="middle" >
-            DELETE
-          </Button>
+            <Button type="dashed" size="middle">
+              DELETE
+            </Button>
           </Popconfirm>
         </>
       ),
     },
   ];
-  const userReducer = useSelector( (state: any) => state.userReducer.userList);
-  const deletedUser = useSelector( (state: any) => state.userReducer.deletedUser);
-  const errorMessage = useSelector( (state: any) => state.userReducer.errorMessage);
+
+  const userReducer = useSelector((state: any) => state.userReducer.userList);
+  const deletedUser = useSelector((state: any) => state.userReducer.deletedUser);
+  const errorMessage = useSelector((state: any) => state.userReducer.errorMessage);
 
   useEffect(() => {
-      setSpin(true);
-      dispatch(getListUserData());
-  },[dispatch]);
+    setSpin(true);
+    dispatch(getListUserData());
+  }, [dispatch]);
 
   useEffect(() => {
-    if(userReducer){
+    if (userReducer) {
       setUserList(userReducer.data);
       setSpin(false);
     }
-  },[userReducer])
+  }, [userReducer])
 
-  const deleteUser = (id:number) => {
+  const deleteUser = (id: number) => {
     dispatch(deleteUserData(id))
   }
 
   useEffect(() => {
-    if(deletedUser === "success") {
+    if (deletedUser === "success") {
       message.success('User Deleted Successfully');
       dispatch(getListUserData());
-    } if(errorMessage) {
+    }
+    if (errorMessage) {
       message.error('Something went wrong');
     }
-  },[deletedUser,errorMessage])
+  }, [deletedUser, errorMessage])
 
-  const viewUser = (id:number) => {
-      dispatch(viewUserData(id))
-      setDrawerContent("view");
-      setDrawer(true);
+  const viewUser = (id: number) => {
+    dispatch(viewUserData(id))
+    setDrawerContent("view");
+    setDrawer(true);
   }
   const addForm = () => {
     setDrawerContent("add");
     setDrawer(true);
   }
-  const updateForm = () => {
-    setDrawerContent("yuyu");
+  const updateForm = (id: number) => {
+    dispatch(viewUserData(id))
+    setDrawerContent("update");
     setDrawer(true);
   }
   const onCloseDrawer = () => {
@@ -98,21 +102,21 @@ const ListUser = () => {
     setDrawer(false)
   }
 
-  const setDrawerContent = (contentType:string) => {
+  const setDrawerContent = (contentType: string) => {
     switch (contentType) {
-      case "view":{
-        setContentType(<ViewUser userId={userId} goBack={() => setDrawer(false)}/>);
+      case "view": {
+        setContentType(<ViewUser goBack={() => setDrawer(false)}/>);
         break
       }
-      case "add":{
+      case "add": {
         setContentType(<AddUser goBack={() => setDrawer(false)}/>);
         break
       }
-      case "update":{
-        setContentType(<AddUser/>);
+      case "update": {
+        setContentType(<AddUser goBack={() => setDrawer(false)}/>);
         break
       }
-      default :{
+      default : {
         setContentType(<Result
           status="404"
           title="404"
@@ -123,24 +127,28 @@ const ListUser = () => {
     }
   }
 
-  return(<div>
-    { spin ?
-      <Skeleton active /> :<div>
-        <div style={{float:"right"}}><Button type="dashed"  onClick={addForm} shape="round" icon={<PlusCircleOutlined />} size="large" >ADD USER</Button></div>
-        <br/>
-        <br/>
-    <Table  columns={columns} dataSource={userList}/> </div>}
-    <Drawer
-      width={640}
-      placement="right"
-      closable
-      onClose={() => onCloseDrawer()}
-      visible={drawer}
-    >
-      {contentType}
-    </Drawer>
+  return (<>
+      {spin ?
+        <Skeleton active paragraph={{rows: 15}}/> :
+        <>
+          <div style={{float: "right"}}>
+            <Button type="dashed" onClick={addForm} shape="round" icon={<PlusCircleOutlined/>} size="large">ADD USER</Button>
+          </div>
+          <br/>
+          <br/>
+          <Table columns={columns} dataSource={userList}/>
+        </>
+      }
+      <Drawer
+        width={640}
+        placement="right"
+        visible={drawer}
+        closable={false}
+      >
+        {contentType}
+      </Drawer>
 
-  </div>
+    </>
   );
 }
 

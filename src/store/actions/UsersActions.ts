@@ -3,13 +3,13 @@ import {
   ERROR_USER_DATA,
   DELETE_USER_DATA,
   VIEW_USER_DATA,
-  CLEAR_USER_DATA, ADD_USER_DATA
+  CLEAR_USER_DATA, ADD_USER_DATA, GET_DATA, UPDATE_USER_DATA
 } from "../actionType/actionType";
 import axios from "axios"
 
 export const getListUserData = () => {
   return (dispatch:any) => {
-    axios.get(  `https://reqres.in/api/users?page=1`).then((response) => {
+    axios.get(  `https://reqres.in/api/users?delay=3`).then((response) => {
       dispatch({ type: LIST_USER_DATA , payload: response.data });
     }).catch(function (error) {
       dispatch({ type: ERROR_USER_DATA ,payload:error });
@@ -49,6 +49,18 @@ export const addUserData = (Name:string,job:string) => {
   return (dispatch:any) => {
     axios.post(  `https://reqres.in/api/users`,{data:{name:Name,job:job}}).then((response) => {
       dispatch({ type: ADD_USER_DATA , payload: response.data });
+    }).catch(function (error) {
+      dispatch({ type: ERROR_USER_DATA ,payload:error });
+    });
+  }
+};
+
+
+
+export const updateUserData = (id:number,Name:string,job:string) => {
+  return (dispatch:any) => {
+    axios.put(  `https://reqres.in/api/users/${id}`,{data:{name:Name,job:job}}).then((response) => {
+      dispatch({ type: UPDATE_USER_DATA , payload: response.data });
     }).catch(function (error) {
       dispatch({ type: ERROR_USER_DATA ,payload:error });
     });

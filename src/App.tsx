@@ -4,6 +4,8 @@ import {Layout, Menu, Breadcrumb} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import UserList from "./component/User/ListUser/UserList"
 import { BrowserRouter, Switch, Route} from "react-router-dom";
+import Login from "./component/Authentication/Login/Login";
+import Register from "./component/Authentication/Registration/Registraion";
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
 
@@ -11,7 +13,9 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <BrowserRouter>
-
+        <Switch>
+          <Route exact path="/login" component={Login}/>
+          <Route exact path="/register" component={Register}/>
         <Layout>
           <Header className="header">
             <div className="logo"/>
@@ -42,14 +46,14 @@ const App: React.FC = () => {
                   minHeight: 280,
                 }}
               >
-                <Switch>
+
                   <Route exact path="/" component={UserList}/>
-                </Switch>
+
               </Content>
             </Layout>
           </Layout>
         </Layout>
-
+        </Switch>
       </BrowserRouter>
     </div>
   );

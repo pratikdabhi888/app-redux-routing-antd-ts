@@ -5,7 +5,7 @@ import {
   UPDATE_USER_DATA,
   VIEW_USER_DATA,
   DELETE_USER_DATA,
-  CLEAR_USER_DATA
+  CLEAR_USER_DATA, GET_DATA
 } from "../../actionType/actionType";
 
 export interface IUserState {
@@ -21,7 +21,9 @@ const initialState: any = {
     errorMessage:"",
     deletedUser:undefined,
     singleUser:undefined,
-    addedUser:undefined
+    addedUser:undefined,
+    user:undefined,
+    updatedUserData:undefined
 }
 
 export const userReducer = (state: any = initialState, action: IAction) => {
@@ -61,6 +63,12 @@ export const userReducer = (state: any = initialState, action: IAction) => {
       return {
         ...state,
         addedUser:action.payload
+      }
+    }
+    case UPDATE_USER_DATA:{
+      return {
+        ...state,
+        updatedUserData: action.payload
       }
     }
     default: {
