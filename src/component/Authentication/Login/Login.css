@@ -5,7 +5,7 @@
 }
 
 .bodys-style {
-    background: #5fafa7;
+    background: #5a7bb7;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,7 +37,7 @@ span {
     font-size: 12px;
 }
 
-a {
+.a-style {
     color: #333;
     font-size: 14px;
     text-decoration: none;
@@ -70,7 +70,7 @@ button.ghost {
     border-color: #ffffff;
 }
 
-form {
+.form-style {
     background-color: #ffffff;
     display: flex;
     align-items: center;

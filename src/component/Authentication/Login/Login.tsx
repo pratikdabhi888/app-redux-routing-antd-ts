@@ -14,7 +14,7 @@ const Login = () => {
         <div className="form-container sign-up-container">
         </div>
         <div className="form-container sign-in-container">
-          <form action="#">
+          <form action="#" className="form-style">
             <h1>Sign in</h1>
 
             <span>or use your account</span>
@@ -22,7 +22,7 @@ const Login = () => {
             <br/>
             <input type="password" placeholder="Password"/>
 
-            <a href="#">Forgot your password?</a>
+            <a href="#" className="a-style">Forgot your password?</a>
             <button>Sign In</button>
           </form>
         </div>

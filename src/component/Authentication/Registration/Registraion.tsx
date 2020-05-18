@@ -15,7 +15,7 @@ const Register = () => {
         <div className="form-container sign-up-container">
         </div>
         <div className="form-container sign-in-container">
-          <form action="#">
+          <form action="#" className="form-style">
             <h1>Signing UP!</h1>
 
             <span>Join with us!</span>
