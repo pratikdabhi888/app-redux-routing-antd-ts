@@ -5,7 +5,7 @@ import {
   UPDATE_USER_DATA,
   VIEW_USER_DATA,
   DELETE_USER_DATA,
-  CLEAR_USER_DATA, GET_DATA
+  CLEAR_USER_DATA, GET_DATA, LOGIN
 } from "../../actionType/actionType";
 
 export interface IUserState {
@@ -23,11 +23,18 @@ const initialState: any = {
     singleUser:undefined,
     addedUser:undefined,
     user:undefined,
-    updatedUserData:undefined
+    updatedUserData:undefined,
+    loginData:undefined
 }
 
 export const userReducer = (state: any = initialState, action: IAction) => {
   switch (action.type) {
+    case LOGIN:{
+      return {
+        ...state,
+        loginData: action.payload,
+      }
+    }
     case LIST_USER_DATA:{
         return {
           ...state,

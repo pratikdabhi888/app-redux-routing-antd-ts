@@ -3,9 +3,19 @@ import {
   ERROR_USER_DATA,
   DELETE_USER_DATA,
   VIEW_USER_DATA,
-  CLEAR_USER_DATA, ADD_USER_DATA, GET_DATA, UPDATE_USER_DATA
+  CLEAR_USER_DATA, ADD_USER_DATA, UPDATE_USER_DATA
 } from "../actionType/actionType";
 import axios from "axios"
+
+export const login = (email:string,password:string, callBack: any) => {
+  return (dispatch:any) => {
+    axios.post(  `https://reqres.in/api/login`,{email:email,password:password}).then((response) => {
+      callBack(response);
+    }).catch(function (error) {
+      dispatch({ type: ERROR_USER_DATA ,payload:error });
+    });
+  }
+};
 
 export const getListUserData = () => {
   return (dispatch:any) => {

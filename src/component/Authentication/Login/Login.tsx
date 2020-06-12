@@ -1,8 +1,23 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "./Login.css"
 import {useHistory} from "react-router";
+import {useSelector, useDispatch} from "react-redux";
+import  { login } from "../../../store/actions/UsersActions";
+
+
 const Login = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+
+  const authenticate = () => {
+    dispatch(login(email,password, (response: any) => {
+       localStorage.setItem('token', response.data.token)
+       history.push('/')
+     }));
+  }
   const signUp = () => {
     history.push("/register")
   }
@@ -16,14 +31,13 @@ const Login = () => {
         <div className="form-container sign-in-container">
           <form action="#" className="form-style">
             <h1>Sign in</h1>
-
             <span>or use your account</span>
-            <input type="email" placeholder="Email"/>
+            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
             <br/>
-            <input type="password" placeholder="Password"/>
+            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
 
             <a href="#" className="a-style">Forgot your password?</a>
-            <button>Sign In</button>
+            <button type="button" onClick={authenticate}>Sign In</button>
           </form>
         </div>
         <div className="overlay-container">
@@ -41,8 +55,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-
-
     </div>
   )
 }
